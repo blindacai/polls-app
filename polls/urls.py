@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from . import views
 
+app_name = 'polls'   # add namespace to tell apart same view name from different apps
 urlpatterns = [
     # /polls/
     url(r'^$', views.index, name='index'),

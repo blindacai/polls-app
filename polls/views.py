@@ -19,7 +19,7 @@ def index(request):
 
 def detail(request, question_id):
     try:
-        question = Question.objects.get(pk=question_id)
+        question = Question.objects.get(pk=question_id) # pk stands for primary key
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, 'polls/detail.html', {'question': question})
@@ -28,7 +28,7 @@ def detail(request, question_id):
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
-    
+
 
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
