@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, Http404
 
 from .models import Question
 
@@ -18,14 +18,17 @@ def index(request):
 
 
 def detail(request, question_id):
-    details = "You're looking at question %s." % question_id
-    context = {'details': details}
-    return render(request, 'polls/detail.html', context)
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'polls/detail.html', {'question': question})
 
 
 def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
+    
 
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
